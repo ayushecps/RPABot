@@ -1,0 +1,147 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="icon" href="{% static 'img/bot.png' %}" type="image/gif" sizes="16x16">
+     <link rel="stylesheet" href="{% static 'css/Style.css' %}"/>
+<title>iChat</title>
+<script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/js.cookie.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+<script type="text/javascript">
+var currentTime = time();
+ var $input = $('.chatInput');
+ var chatterbotUrl = '{% url "chatterbot:chatterbot" %}';
+      var csrftoken = Cookies.get('csrftoken');
+
+      function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      }
+
+      $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+        }
+      });
+<!-- writing a function to create input row when user submit its input-->
+function createRowHuman(text) {
+        var span = "<span class=\"humanMessage\" >"+ text +"<p class=\"showTime\">"+currentTime+"</span>";
+			$("#chatArea").append(span);
+			$("#chatInput").val("");
+			$("#chatArea").animate({ scrollTop: $("#chatArea").prop('scrollHeight')}, 1000);
+			//set a variable as isResponseRecieved= 0 and set the message that user chatbot is typing
+			$('#chatInput').attr("placeholder","iChat is Typing...");
+      }
+function createRowBot(text) {
+//set a variable as isResponseRecieved= 0 and empty the message that user chatbot is typing
+       var span = "<span class=\"botMessage\" >"+ text +"<p class=\"showTime\">"+currentTime+"</span>";
+		$("#chatArea").append(span);
+		$("#chatInput").val("");
+		$("#chatArea").animate({ scrollTop: $("#chatArea").prop('scrollHeight')}, 1000);
+		$('#chatInput').attr("placeholder","Ask me anything...");
+
+     }
+
+
+function submitInput() {
+        var inputData ={
+        'text': $(".chatInput").val()
+        };
+        // Display the user's input on the web page
+        if(inputData.text!="")
+        {
+        createRowHuman(inputData.text);
+
+
+       var $submit = $.ajax({
+         type: 'POST',
+         url: chatterbotUrl,
+         data: JSON.stringify(inputData),
+         contentType: 'application/json'
+       });
+
+
+           $submit.done(function(statement) {
+            createRowBot(statement.text);
+       });
+       }
+
+        $submit.fail(function() {
+          // TODO: Handle errors
+        });
+      }
+
+
+$(document).ready(function() {
+
+$("#chatBox").hide();
+var reply = "<span class=\"botMessage\" >"+"Hi! My name is iChat and I am a Chatbot. I can help you with your work related queries. Please type in your question in the space provided.<p class=\"showTime\">"+currentTime+"</p></span></br></br></br>";
+
+
+	$("#chatArea").append(reply);
+
+
+	$("#chatBox").hide();
+	$("#activateiChat").click(function(){
+        $("#activateiChat").hide();
+		$("#chatBox").show();
+    });
+	$("#minimizeButton").click(function(){
+        $("#chatBox").hide();
+		$("#activateiChat").show();
+    });
+
+});
+
+function hideChatBox(){
+	$("#chatBox").hide();
+	$("#activateiChat").show();
+}
+
+function sayThanks(){
+	var reply = "<span class=\"botMessage\" >"+"Thank you!"+"</span>";
+	$("#chatArea").append(reply);
+}
+function saySorry(){
+	var reply = "<span class=\"botMessage\" >"+"Okay, I shall try to serve you better next time. Sorry for the inconvenience!"+"</span>";
+	$("#chatArea").append(reply);
+}
+
+function time(){
+	var date = new Date();
+	var hours = date.getHours();
+	var minutes = date.getMinutes();
+	var ampm = hours >= 12 ? 'PM' : 'AM';
+	hours = hours % 12;
+	hours = hours ? hours : 12; // the hour '0' should be '12'
+	minutes = minutes < 10 ? '0'+minutes : minutes;
+	var strTime = hours + ':' + minutes + ' ' + ampm;
+	return strTime;
+}
+</script>
+</head>
+<body >
+
+<div class="mainContainer">
+<button id="activateiChat" > <img src="{% static 'img/bot.png' %}" /> </button>
+<div id="chatBox">
+<div id="header"><span id="botName">iChat  <img src="{% static 'img/greenDot.png' %}"alt="available" /></span><button id="minimizeButton" ><img id="minimize" src="{% static 'img/minimize.png' %}" alt="minimize"/></button></div>
+<div id="body">
+
+<div id="chatArea"> 
+
+</div>
+
+
+<input type="text" id="chatInput" class="chatInput" placeholder="Ask me anything..." onkeypress="if (event.keyCode == 13)
+                        document.getElementById('sendButton').click()" /><button id="sendButton" onclick="submitInput();"> <img src="{% static 'img/sendAgain.png' %}" /> </button>
+</div>
+<div id="footer">Was this helpful? &nbsp;&nbsp;<a href="#" style="text-decoration:none;color:#fff;" onclick="sayThanks();">Yes</a> | <a href="#" style="text-decoration:none;color:#fff;" onclick="saySorry();">No</a></div>
+</div>
+</div>
+</body>
+</html>

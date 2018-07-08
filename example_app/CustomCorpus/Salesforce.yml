@@ -1,0 +1,19 @@
+categories:
+- Salesforce
+conversations:
+- - Please reset my salesforce password
+  - Please enter your salesforce username
+- - Salesforce password reset
+  - Please enter your salesforce username
+- - I forgot my salesforce password
+  - Please enter your salesforce username
+- - m.chauhan@tcs.com
+  - Please provide your favourite cricket player
+- - ayush@k.com
+  - Please provide your favourite cricket player
+- - Abc
+  - Please provide your birth place
+- - Xyz
+  - Please confirm if you want to reset your password
+- - Yes
+  - Ok you'll receive an email with password reset link in 2 min at your registered mail id
