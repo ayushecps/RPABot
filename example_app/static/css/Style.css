@@ -75,14 +75,13 @@ padding: 40px 10px;}
 	left: 0;
 }
 #chatBox{
-	height:550px;
+	height:543px;
 	width:400px;
 	float:right;
 	bottom:0;
 	margin-left:70%;
 	position: absolute;
 	right: 0;
-    margin-bottom: -7px;
 }
 #header{
 	/*background-color:#e55b59;*/
