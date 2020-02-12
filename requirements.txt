@@ -5,7 +5,7 @@ chatterbot-corpus==1.0.1
 chatterbot-weather==0.1.1
 click==6.7
 cookies==2.2.1
-Django==1.11.4
+Django==1.11.28
 django-key==0.5.0
 et-xmlfile==1.0.1
 Flask==0.12.2
