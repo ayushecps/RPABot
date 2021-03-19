@@ -17,7 +17,7 @@ httplib2==0.10.3
 idna==2.6
 itsdangerous==0.24
 jdcal==1.4
-Jinja2==2.9.6
+Jinja2==2.11.3
 jsondatabase==0.1.7
 key==0.4
 MarkupSafe==1.0
