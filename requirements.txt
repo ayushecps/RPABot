@@ -42,7 +42,7 @@ ruamel.yaml==0.15.0
 six==1.11.0
 SQLAlchemy==1.1.13
 uritemplate==3.0.0
-urllib3==1.22
+urllib3==1.26.5
 Werkzeug==0.12.2
 whitenoise==3.3.0
 xlrd==1.1.0
